@@ -123,7 +123,7 @@ def create_folium_map(df):
         folium.CircleMarker(
             location=[lat, lon],
             radius=radius,
-            tooltip=f"State: {state}<br>Sales: ${sales}",
+            tooltip=f"<span style='font-size: 16px;'>State: {state}<br>Sales: ${sales}",
             color="blue",
             fill=True,
             fill_color="blue",
@@ -140,48 +140,44 @@ map_file = create_folium_map(df)
 
 # Initialize the Dash app
 app = Dash(__name__)
+
 server = app.server
+
 # Layout of the app
 app.layout = html.Div([
     html.H1("Sample SuperStore Sales Analysis Dashboard"),
     html.P("This is a python dashboard application by AY Khalid", style={"font-style": "italic", "font-size":"14px", "color":"grey"}),
+    
+    html.P("Select Ship Mode", style={"font-size":"14px","font-style": "italic", "color":"grey", "textAlign": "right"}),
     html.Div([
 
     html.H3(id="total-sales", children="Total Sales: $0.00", style={"flex":1, "alignContent":"center", "color":"grey", "backgroundColor":"white", "padding":"5px", "fontSize":"20px"}),
     html.Div([
-        html.P("Select Ship Mode", style={"font-size":"20px","font-style": "italic", "color":"grey", "textAlign": "right"}),
         dcc.Dropdown(
             id="ship-mode-dropdown",
             options=[{"label": mode, "value": mode} for mode in df["Ship Mode"].unique()],
             value=df["Ship Mode"].unique()[0]
             , style={"fontSize":"20px"}
         ),
-    ], style={"flex":1, "alignContent":"center", "display":"inline-block"})
+    ], style={"flex": 1, "alignContent": "center"})
 
-    ], style={"display":"flex", "gap":"60px"}),
+    ], style={"display":"flex", "gap":"60px", "height":"76px"}),
 
 
 
     html.Div([
 
-        html.Div([
-            html.H3("Sales by Product Sub-Categories", style={"opacity":0.5, "textAlign": "left"}),
-            html.P("Technological products consistently outperform other categories in sales, with furniture products following closely behind.", style={"opacity":0.5, "textAlign": "left"}),
-        dcc.Graph(id="bar-chart")
-        ], style="display":"inline-block"),
+
+        dcc.Graph(id="bar-chart"),
+
 
         html.Div([
-                    
-        html.Div([
-            html.H3("Sales by Segment", style={"opacity":0.5, "textAlign": "left"}),
-            html.P("Sales appear to be consistently proportional across all segments, regardless of the ship mode.", style={"opacity":0.5, "textAlign": "left"}),
-        dcc.Graph(id="bar-chart2", style={"flex":1, "justifyContent":"center", "alignContent":"center"})
-        ], style="display":"inline-block"),
+
+        dcc.Graph(id="bar-chart2", style={"flex":1, "justifyContent":"center", "alignContent":"center"}),
 
         # Embed the map using Iframe
         html.Div([
-            html.H3("Sales by State", style={"opacity":0.5, "textAlign": "left"}),
-            html.P("The size of the circles are in proportion to sales value, i.e states with highest sales have a bigger circle.", style={"opacity":0.5, "textAlign": "left"}),
+            html.H3("Sales by State", style={"color":"gray", "textAlign":"left", "paddingLeft":"20px"}),
             html.Iframe(
                 srcDoc=open(map_file, 'r').read(),
                 width="100%",
@@ -213,14 +209,26 @@ def update_charts(selected_ship_mode):
     total_sales = filtered_df3["Sales"].sum()
 
     # Bar chart for Sub-Category sales
-    bar_chart = px.bar(filtered_df1, x="Sub-Category", y="Sales")
+    bar_chart = px.bar(filtered_df1, x="Sub-Category", y="Sales", title="Sales by Sub-Categories")
     bar_chart.update_layout(
     paper_bgcolor='white',
-    plot_bgcolor='white'
+    plot_bgcolor='white',
+    annotations=[
+        dict(
+            x=0,  # X position of the annotation (0 is left, 1 is right, 0.5 is center)
+            y=1.15,  # Y position of the annotation (1 is at the top)
+            xref="paper",  # Use "paper" to position relative to the whole paper
+            yref="paper",  # Use "paper" to position relative to the whole paper
+            text="Technological products consistently outperform other categories in sales, with furniture products following closely behind.",  # The text of the caption
+            showarrow=False,  # No arrow for the caption
+            font=dict(size=12, color="gray"),  # Font style for the caption
+            align="center"  # Align the caption text in the center
+        )
+    ]
 )
 
     # Bar chart for Segment sales
-    bar_chart2 = px.bar(filtered_df2, x="Segment", y="Sales")
+    bar_chart2 = px.bar(filtered_df2, x="Segment", y="Sales", title="Sales by Segment")
     bar_chart2.update_layout(
     paper_bgcolor='white' ,
     plot_bgcolor='white'
