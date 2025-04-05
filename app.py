@@ -164,17 +164,24 @@ app.layout = html.Div([
 
     html.Div([
 
-
-        dcc.Graph(id="bar-chart"),
-
+        html.Div([
+            html.H3("Sales by Product Sub-Categories", style={"opacity":0.5, "textAlign": "left"}),
+            html.P("Technological products consistently outperform other categories in sales, with furniture products following closely behind.", style={"opacity":0.5, "textAlign": "left"}),
+        dcc.Graph(id="bar-chart")
+        ], style="display":"inline-block"),
 
         html.Div([
-
-        dcc.Graph(id="bar-chart2", style={"flex":1, "justifyContent":"center", "alignContent":"center"}),
+                    
+        html.Div([
+            html.H3("Sales by Segment", style={"opacity":0.5, "textAlign": "left"}),
+            html.P("Sales appear to be consistently proportional across all segments, regardless of the ship mode.", style={"opacity":0.5, "textAlign": "left"}),
+        dcc.Graph(id="bar-chart2", style={"flex":1, "justifyContent":"center", "alignContent":"center"})
+        ], style="display":"inline-block"),
 
         # Embed the map using Iframe
         html.Div([
-            html.H3("Sales by State", style={"opacity":0.5}),
+            html.H3("Sales by State", style={"opacity":0.5, "textAlign": "left"}),
+            html.P("The size of the circles are in proportion to sales value, i.e states with highest sales have a bigger circle.", style={"opacity":0.5, "textAlign": "left"}),
             html.Iframe(
                 srcDoc=open(map_file, 'r').read(),
                 width="100%",
@@ -206,14 +213,14 @@ def update_charts(selected_ship_mode):
     total_sales = filtered_df3["Sales"].sum()
 
     # Bar chart for Sub-Category sales
-    bar_chart = px.bar(filtered_df1, x="Sub-Category", y="Sales", title="Sales by Sub-Categories")
+    bar_chart = px.bar(filtered_df1, x="Sub-Category", y="Sales")
     bar_chart.update_layout(
     paper_bgcolor='white',
     plot_bgcolor='white'
 )
 
     # Bar chart for Segment sales
-    bar_chart2 = px.bar(filtered_df2, x="Segment", y="Sales", title="Sales by Segment")
+    bar_chart2 = px.bar(filtered_df2, x="Segment", y="Sales")
     bar_chart2.update_layout(
     paper_bgcolor='white' ,
     plot_bgcolor='white'
