@@ -140,7 +140,7 @@ map_file = create_folium_map(df)
 
 # Initialize the Dash app
 app = Dash(__name__)
-
+server = app.server
 # Layout of the app
 app.layout = html.Div([
     html.H1("Sample SuperStore Sales Analysis Dashboard"),
