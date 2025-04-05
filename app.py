@@ -194,7 +194,7 @@ app.layout = html.Div([
     Input("ship-mode-dropdown", "value")
 )
 def update_charts(selected_ship_mode):
-    df_group1 = df.groupby(["Ship Mode", "Sub-Category"])["Sales"].sum().sort_values(ascending=True).reset_index()
+    df_group1 = df.groupby(["Ship Mode", "Sub-Category"])["Sales"].sum().sort_values(ascending=False).reset_index()
     df_group2 = df.groupby(["Ship Mode", "Segment"])["Sales"].sum().reset_index()
 
     filtered_df3 = df[df["Ship Mode"] == selected_ship_mode]
