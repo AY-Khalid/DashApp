@@ -156,7 +156,7 @@ app.layout = html.Div([
         dcc.Dropdown(
             id="ship-mode-dropdown",
             options=[{"label": mode, "value": mode} for mode in df["Ship Mode"].unique()],
-            value=df["Ship Mode"].unique()[0]
+            value=df["Ship Mode"].unique()[2]
             , style={"fontSize":"20px"}
         ),
     ], style={"flex": 1, "alignContent": "center"})
