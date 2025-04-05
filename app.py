@@ -149,13 +149,14 @@ app.layout = html.Div([
 
     html.H3(id="total-sales", children="Total Sales: $0.00", style={"flex":1, "alignContent":"center", "color":"grey", "backgroundColor":"white", "padding":"5px", "fontSize":"20px"}),
     html.Div([
+        html.P("Select Ship Mode", style={"font-size":"20px","font-style": "italic", "color":"grey", "textAlign": "right"}),
         dcc.Dropdown(
             id="ship-mode-dropdown",
             options=[{"label": mode, "value": mode} for mode in df["Ship Mode"].unique()],
             value=df["Ship Mode"].unique()[0]
             , style={"fontSize":"20px"}
         ),
-    ], style={"flex":1, "alignContent":"center"})
+    ], style={"flex":1, "alignContent":"center", "display":"inline-block"})
 
     ], style={"display":"flex", "gap":"60px"}),
 
